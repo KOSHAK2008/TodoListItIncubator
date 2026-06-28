@@ -10,12 +10,13 @@ type PropsType = {
     deleteTask: (taskId: string, todoListId: string) => void
     changeFilter: (filter: FilterValuesType, todoListId: string) => void
     createTask: (title: TaskType["title"], todoListId: string) => void
+    changeTodoListTitle:(title: string, todoListId: string)=> void
     changeTaskStatus: (taskId: TaskType["id"], isDone: TaskType["isDone"], todoListId: string) => void
     changeTaskTitle: (taskId: TaskType["id"], title: string, todoListId: string) => void
     removeTodoList: ( todoListId: string) => void
 }
 
-export const Todolist = ({todoList, tasks, deleteTask, changeFilter, createTask, changeTaskStatus, changeTaskTitle, removeTodoList}: PropsType) => {
+export const Todolist = ({todoList, tasks, deleteTask, changeFilter, createTask, changeTodoListTitle, changeTaskStatus, changeTaskTitle, removeTodoList}: PropsType) => {
 
 
     const removeTodoListHandler = () => {
@@ -26,10 +27,14 @@ export const Todolist = ({todoList, tasks, deleteTask, changeFilter, createTask,
         createTask(title, todoList.id)
     }
 
+    const changeTodoListsTitleHandler = (title: string) =>{
+        changeTodoListTitle(todoList.id, title)
+    }
+
     return (
         <div>
             <div className={"container"}>
-                <EditableSpan title={todoList.title}/>
+                <EditableSpan title={todoList.title} changeTitle={changeTodoListsTitleHandler}/>
                 <Button title={"x"} onClick={removeTodoListHandler}/>
             </div>
             <CreateItemForm createRItem={createTaskHandler}/>
