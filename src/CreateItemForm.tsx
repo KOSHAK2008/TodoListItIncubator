@@ -1,6 +1,8 @@
-import {Button} from "./src/Button";
 import {type ChangeEvent, type KeyboardEvent, useState} from "react"
-import {TaskType} from "./src/App.tsx";
+import {TaskType} from "./App.tsx";
+import TextField from "@mui/material/TextField";
+import AddBoxIcon from '@mui/icons-material/AddBox'
+import IconButton from '@mui/material/IconButton'
 
 type PropsType = {
     createRItem: (title: TaskType["title"]) => void
@@ -17,7 +19,7 @@ export const CreateItemForm = ({createRItem}: PropsType) => {
         const title = titleItem.trim()
         if (title !== "") {
             createRItem(titleItem)
-        } else setError(true)
+        } else setError("Title is required")
         setTitleItem("")
     }
 
@@ -35,17 +37,17 @@ export const CreateItemForm = ({createRItem}: PropsType) => {
 
     return (
         <div>
-            <input
-                className={error ? "error" : ""}
-                value={titleItem}
-                onChange={changeTitleHandler}
-                onKeyDown={createItemOnEnterHandler}
-            />
-            <Button title={"+"}
-                    onClick={createItemHandler}
-                    disabled={!isTitleValid}
-            />
-            {error && <div style={{color: "red"}}> Enter valid title </div>}
+            <TextField value={titleItem}
+                       error={!!error}
+                       label="Enter a title"
+                       variant="outlined"
+                       size={"small"}
+                       helperText={error}
+                       onChange={changeTitleHandler}
+                       onKeyDown={createItemOnEnterHandler}/>
+            <IconButton onClick={createItemHandler} color={'primary'}>
+                <AddBoxIcon />
+            </IconButton>
         </div>
     );
 };

@@ -1,38 +1,14 @@
+.app {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+}
+
 .container {
     display: flex;
     align-items: center;
-    gap: 20px;
 }
 
-
-.app {
-    padding: 30px;
-    display: flex;
-}
-
-.app > div {
-    margin-right: 50px;
-}
-
-.task {
-    font-weight: bold;
-}
-
-.task-done {
-    text-decoration: line-through;
-    font-style: italic;
+.is-done {
     opacity: 0.5;
 }
-
-.filter--btn-active {
-    background-color: darkkhaki;
-    color: white;
-    border-radius: 5px;
-    border: 2px solid darkgoldenrod;
-}
-
-.error {
-    outline: none;
-    border: 2px solid red;
-}
-

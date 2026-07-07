@@ -1,8 +1,16 @@
 import {FilterValuesType, TaskType, TodoListType} from "./App"
-import {Button} from "./Button"
-import {CreateItemForm} from "../CreateItemForm.tsx";
+// import {Button} from "./Button"
+import Button from "@mui/material/Button";
+import {CreateItemForm} from "./CreateItemForm.tsx";
 import {EditableSpan} from "./EditableSpan.tsx";
 import {ChangeEvent} from "react";
+import IconButton from "@mui/material/IconButton";
+import ClearIcon from "@mui/icons-material/Clear";
+import Checkbox from "@mui/material/Checkbox";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Box from "@mui/material/Box";
+import {containerSx, getListItemSx} from "./TodolistItem.styles"
 
 type PropsType = {
     todoList: TodoListType
@@ -10,24 +18,34 @@ type PropsType = {
     deleteTask: (taskId: string, todoListId: string) => void
     changeFilter: (filter: FilterValuesType, todoListId: string) => void
     createTask: (title: TaskType["title"], todoListId: string) => void
-    changeTodoListTitle:(title: string, todoListId: string)=> void
+    changeTodoListTitle: (title: string, todoListId: string) => void
     changeTaskStatus: (taskId: TaskType["id"], isDone: TaskType["isDone"], todoListId: string) => void
     changeTaskTitle: (taskId: TaskType["id"], title: string, todoListId: string) => void
-    removeTodoList: ( todoListId: string) => void
+    removeTodoList: (todoListId: string) => void
 }
 
-export const Todolist = ({todoList, tasks, deleteTask, changeFilter, createTask, changeTodoListTitle, changeTaskStatus, changeTaskTitle, removeTodoList}: PropsType) => {
+export const Todolist = ({
+                             todoList,
+                             tasks,
+                             deleteTask,
+                             changeFilter,
+                             createTask,
+                             changeTodoListTitle,
+                             changeTaskStatus,
+                             changeTaskTitle,
+                             removeTodoList
+                         }: PropsType) => {
 
 
     const removeTodoListHandler = () => {
         removeTodoList(todoList.id)
     }
 
-    const createTaskHandler = ( title: string) => {
+    const createTaskHandler = (title: string) => {
         createTask(title, todoList.id)
     }
 
-    const changeTodoListsTitleHandler = (title: string) =>{
+    const changeTodoListsTitleHandler = (title: string) => {
         changeTodoListTitle(todoList.id, title)
     }
 
@@ -41,7 +59,7 @@ export const Todolist = ({todoList, tasks, deleteTask, changeFilter, createTask,
             {tasks.length === 0 ? (
                 <p>Тасок нет</p>
             ) : (
-                <ul>
+                <List>
                     {tasks.map(task => {
                         const deleteTaskHandler = () => {
                             deleteTask(task.id, todoList.id)
@@ -52,39 +70,48 @@ export const Todolist = ({todoList, tasks, deleteTask, changeFilter, createTask,
                             changeTaskStatus(task.id, newStatusValue, todoList.id)
                         }
 
-                        const changeTaskTitleHandler = ( title: string) => {
+                        const changeTaskTitleHandler = (title: string) => {
                             changeTaskTitle(task.id, title, todoList.id)
                         }
 
 
                         return (
-                            <li key={task.id}>
-                                <input type="checkbox"
-                                       checked={task.isDone}
-                                       onChange={changeTaskStatusHandler}
-                                />
-                                <EditableSpan title={task.title} changeTitle={changeTaskTitleHandler}/>
+                            <ListItem key={task.id} sx={getListItemSx(task.isDone)}>
+                                <div>
+                                    <Checkbox checked={task.isDone} onChange={changeTaskStatusHandler}/>
+                                    <EditableSpan title={task.title} changeTitle={changeTaskTitleHandler}/>
+                                </div>
                                 {/*<span className={task.isDone ? "task-done" : "task"}>{task.title}</span>*/}
-                                <Button title={"x"} onClick={deleteTaskHandler}/>
-                            </li>
+                                <IconButton aria-label="delete" onClick={deleteTaskHandler}>
+                                    <ClearIcon/>
+                                </IconButton>
+                            </ListItem>
                         )
                     })}
-                </ul>
+                </List>
             )}
-            <div>
+            <Box sx={containerSx}>
                 <Button title={"All"}
                         onClick={() => changeFilter("all", todoList.id)}
-                        className={todoList.filter === "all" ? "filter--btn-active" : ""}
-                />
+                        color={"inherit"}
+                        variant={todoList.filter === "all" ? "outlined" : "text"}>
+                    All
+                </Button>
                 <Button title={"Active"}
                         onClick={() => changeFilter("active", todoList.id)}
-                        className={todoList.filter === "active" ? "filter--btn-active" : ""}
-                />
+                        variant={todoList.filter === "active" ? "outlined" : "text"}
+                        color={"primary"}
+                >
+                    Active
+                </Button>
                 <Button title={"Completed"}
                         onClick={() => changeFilter("completed", todoList.id)}
-                        className={todoList.filter === "completed" ? "filter--btn-active" : ""}
-                />
-            </div>
+                        variant={todoList.filter === "completed" ? "outlined" : "text"}
+                        color={"secondary"}
+                >
+                    Completed
+                </Button>
+            </Box>
         </div>
     )
 }
