@@ -53,7 +53,10 @@ export const Todolist = ({
         <div>
             <div className={"container"}>
                 <EditableSpan title={todoList.title} changeTitle={changeTodoListsTitleHandler}/>
-                <Button title={"x"} onClick={removeTodoListHandler}/>
+                {/*<Button title={"X"} onClick={removeTodoListHandler}/>*/}
+                <IconButton aria-label="delete" onClick={removeTodoListHandler}>
+                    <ClearIcon/>
+                </IconButton>
             </div>
             <CreateItemForm createRItem={createTaskHandler}/>
             {tasks.length === 0 ? (
